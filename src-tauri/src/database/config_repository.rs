@@ -16,7 +16,7 @@ pub enum ConfigTypes {
     FlushDnsOnChange,
     Autostart,
     MinimizeToTray,
-    CloseToTray
+    CloseToTray,
 }
 impl ConfigTypes {
     pub fn as_str(&self) -> &'static str {
@@ -31,7 +31,7 @@ impl ConfigTypes {
 
 // get all configs list
 pub fn get(state: &DbState) -> Result<Configs, ()> {
-    let db = state.0.lock().map_err(|e|{log::error!("{e}")})?;
+    let db = state.0.lock().map_err(|e| log::error!("{e}"))?;
 
     let result = db.query_row("
         SELECT id, flush_dns_on_change, autostart, minimize_to_tray, close_to_tray FROM configs WHERE id = 1", 
@@ -52,15 +52,21 @@ pub fn get(state: &DbState) -> Result<Configs, ()> {
 pub fn update(state: &DbState, col: ConfigTypes, value: bool) -> Result<(), String> {
     let column = col.as_str();
 
-    let db = state.0.lock().map_err(|e|{log::error!("{e}"); e.to_string()})?;
+    let db = state.0.lock().map_err(|e| {
+        log::error!("{e}");
+        e.to_string()
+    })?;
 
     let query = format!("UPDATE configs SET {} = ?1 WHERE id = 1", column);
 
-    let row = db.execute(&query,[value as i32]).map_err(|e|{log::error!("{e}"); e.to_string()})?;
+    let row = db.execute(&query, [value as i32]).map_err(|e| {
+        log::error!("{e}");
+        e.to_string()
+    })?;
 
     if row == 0 {
         Err(format!("{row} row was updated"))
-    }else {
+    } else {
         Ok(())
     }
 }

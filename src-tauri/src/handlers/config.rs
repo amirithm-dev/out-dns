@@ -1,4 +1,7 @@
-use crate::{database::{config_repository::{Configs}, db::DbState}, services::config_service};
+use crate::{
+    database::{config_repository::Configs, db::DbState},
+    services::config_service,
+};
 
 #[tauri::command]
 pub fn get_configs(state: tauri::State<DbState>) -> Result<Configs, ()> {
@@ -6,10 +9,7 @@ pub fn get_configs(state: tauri::State<DbState>) -> Result<Configs, ()> {
 }
 
 #[tauri::command]
-pub fn toggle_flush_dns_on_change(
-    value: bool,
-    state: tauri::State<DbState>,
-) -> Result<(), String> {
+pub fn toggle_flush_dns_on_change(value: bool, state: tauri::State<DbState>) -> Result<(), String> {
     config_service::toggle_flush_dns_on_change(value, &state)
 }
 
@@ -32,4 +32,3 @@ pub fn toggle_close_to_tray(value: bool, state: tauri::State<DbState>) -> Result
 pub fn open_log_folder(app: tauri::AppHandle) -> Result<(), ()> {
     config_service::open_log_folder(&app)
 }
-

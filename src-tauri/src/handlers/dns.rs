@@ -1,5 +1,4 @@
-
-use crate::{database::db::DbState,database::dns_repository::DnsEntries, services::dns_service};
+use crate::{database::db::DbState, database::dns_repository::DnsEntries, services::dns_service};
 
 #[tauri::command]
 pub fn flush_dns() -> Result<(), String> {
@@ -31,7 +30,7 @@ pub async fn set_dns(
     interface: &str,
     primary: &str,
     secondary: &str,
-    state: tauri::State<'_,DbState>
+    state: tauri::State<'_, DbState>,
 ) -> Result<(), String> {
     dns_service::set_dns(interface, primary, secondary, state)
 }

@@ -51,7 +51,7 @@ export default function DNS({section}: {section: string}){
     }
     useEffect(()=>{
         fetchDns();
-    });
+    },[]);
 
     function removeDns(id: number) {
         invoke<string>("remove_dns", {id: id})

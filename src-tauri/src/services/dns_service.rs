@@ -1,24 +1,33 @@
 use std::time::Instant;
 use tauri_plugin_log::log;
 
-use hickory_resolver::{TokioAsyncResolver, config::{NameServerConfigGroup, ResolverConfig, ResolverOpts}};
+use hickory_resolver::{
+    config::{NameServerConfigGroup, ResolverConfig, ResolverOpts},
+    TokioAsyncResolver,
+};
 
-use crate::{database::{db::DbState, dns_repository::{DnsEntries, delete, get, insert}}, platform::dns};
+use crate::{
+    database::{
+        db::DbState,
+        dns_repository::{delete, get, insert, DnsEntries},
+    },
+    platform::dns,
+};
 
 // insert new dns record
-pub fn new_dns(name: &str, primary: &str, secondary: &str, state: &DbState) -> Result<(), ()>{
+pub fn new_dns(name: &str, primary: &str, secondary: &str, state: &DbState) -> Result<(), ()> {
     insert(name, primary, secondary, &state)
 }
 // remove an existed dns record
-pub fn remove_dns(id: i64, state: &DbState) -> Result<() ,()>{
+pub fn remove_dns(id: i64, state: &DbState) -> Result<(), ()> {
     delete(id, &state)
 }
 // get all dns records
-pub fn get_dns_from_db(state: &DbState) -> Result<Vec<DnsEntries>, ()>{
+pub fn get_dns_from_db(state: &DbState) -> Result<Vec<DnsEntries>, ()> {
     get(&state)
 }
 // lookup the dns ip for speed testing
-pub async fn lookup(ip: &str) -> Result<u128, String>{
+pub async fn lookup(ip: &str) -> Result<u128, String> {
     let dns_port = 53;
     let domain = "www.google.com.";
 
@@ -26,8 +35,7 @@ pub async fn lookup(ip: &str) -> Result<u128, String>{
         None,
         vec![],
         NameServerConfigGroup::from_ips_clear(
-            &[ip
-                .trim()
+            &[ip.trim()
                 .parse()
                 .map_err(|_| format!("Invalid DNS Ip Address: {}", ip.trim()))?],
             dns_port,
@@ -64,18 +72,26 @@ pub async fn lookup(ip: &str) -> Result<u128, String>{
     }
 }
 // flush dns cache | platform specific
-pub fn flush_dns() -> Result<(), String>{
+pub fn flush_dns() -> Result<(), String> {
     dns().flush_dns()
 }
 // set dns for all interfaces or an specific interface | platform specific
-pub fn set_dns(interface: &str, primary: &str, secondary: &str, state: tauri::State<DbState>) -> Result<(), String>{
+pub fn set_dns(
+    interface: &str,
+    primary: &str,
+    secondary: &str,
+    state: tauri::State<DbState>,
+) -> Result<(), String> {
     if !validate(primary, secondary) {
         return Err("invalid DNS ip address".to_string());
     }
 
-    dns().set_dns(interface, primary, secondary, state)
-    .map_err(|e| {log::error!("{}", e.to_string()); e.to_string()})
-
+    dns()
+        .set_dns(interface, primary, secondary, state)
+        .map_err(|e| {
+            log::error!("{}", e.to_string());
+            e.to_string()
+        })
 }
 
 pub fn validate(primary: &str, secondary: &str) -> bool {

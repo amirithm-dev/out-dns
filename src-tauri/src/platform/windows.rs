@@ -4,13 +4,12 @@ use std::path::PathBuf;
 use std::process::Command;
 use tauri::Manager;
 use tauri_plugin_log::log;
+use windows::core::{GUID, PCWSTR, PWSTR};
 use windows::Win32::NetworkManagement::IpHelper::*;
 use windows::Win32::Networking::WinSock::AF_UNSPEC;
 use windows::Win32::System::Com::CLSIDFromString;
-use windows::core::{GUID, PCWSTR, PWSTR};
 
-
-use crate::database::config_repository::{Configs, get};
+use crate::database::config_repository::{get, Configs};
 use crate::database::db::DbState;
 use crate::platform::ConfigManager;
 use crate::services::interface_service::get_interfaces;
@@ -26,12 +25,21 @@ impl DnsManager for WindowsDns {
             .args(["/flushdns"])
             .creation_flags(0x08000000)
             .output()
-            .map_err(|e| {log::error!("{e}"); e.to_string()})?;
-        
+            .map_err(|e| {
+                log::error!("{e}");
+                e.to_string()
+            })?;
+
         Ok(())
     }
     // set dns using windows api
-    fn set_dns(&self, interface: &str, primary: &str, secondary: &str, state: tauri::State<DbState>) -> Result<(), String> {
+    fn set_dns(
+        &self,
+        interface: &str,
+        primary: &str,
+        secondary: &str,
+        state: tauri::State<DbState>,
+    ) -> Result<(), String> {
         let servers = if primary.is_empty() && secondary.is_empty() {
             String::new()
         } else if secondary.is_empty() {
@@ -52,9 +60,15 @@ impl DnsManager for WindowsDns {
         let mut failure: Vec<&str> = vec![];
 
         if interface == "All Networks" {
-            let interfaces = get_interfaces().map_err(|e| {log::error!("{:?}", e); "failed to fetch interfaces"})?;
+            let interfaces = get_interfaces().map_err(|e| {
+                log::error!("{:?}", e);
+                "failed to fetch interfaces"
+            })?;
             for i in &interfaces {
-                let guid = get_interface_guid_by_name(i).map_err(|e| {log::error!("{:?}", e); "failed to get interface GUID"})?;
+                let guid = get_interface_guid_by_name(i).map_err(|e| {
+                    log::error!("{:?}", e);
+                    "failed to get interface GUID"
+                })?;
                 let result = unsafe { SetInterfaceDnsSettings(guid, &settings) };
                 if result.is_err() {
                     log::error!("failed to set dns error code: {:?}", result);
@@ -62,13 +76,13 @@ impl DnsManager for WindowsDns {
                 }
             }
             if failure.len() > 0 {
-                return Err(format!(
-                    "set dns failed: {:?}",
-                    failure
-                ));
+                return Err(format!("set dns failed: {:?}", failure));
             }
         } else {
-            let guid = get_interface_guid_by_name(interface).map_err(|e| {log::error!("{:?}", e); "failed to get interface GUID"})?;
+            let guid = get_interface_guid_by_name(interface).map_err(|e| {
+                log::error!("{:?}", e);
+                "failed to get interface GUID"
+            })?;
             let result = unsafe { SetInterfaceDnsSettings(guid, &settings) };
             if result.is_err() {
                 log::error!("failed to set dns error code: {:?}", result);
@@ -77,9 +91,15 @@ impl DnsManager for WindowsDns {
         }
 
         // flush dns on change based on app configuration
-        let configs: Configs = get(&state).map_err(|e| {log::error!("{:?}", e); "failed to fetch configs"})?;
+        let configs: Configs = get(&state).map_err(|e| {
+            log::error!("{:?}", e);
+            "failed to fetch configs"
+        })?;
         if configs.flush_dns_on_change {
-            self.flush_dns().map_err(|e| {log::error!("{:?}", e); "failed to flush DNS"})?;
+            self.flush_dns().map_err(|e| {
+                log::error!("{:?}", e);
+                "failed to flush DNS"
+            })?;
         }
 
         Ok(())
@@ -117,13 +137,12 @@ pub fn get_interface_guid_by_name(friendly_name: &str) -> Result<GUID, ()> {
     while !current.is_null() {
         let adapter = unsafe { &*current };
 
-        let name = unsafe { adapter.FriendlyName.to_string() }
-            .map_err(|e| log::error!("{}", e))?;
+        let name = unsafe { adapter.FriendlyName.to_string() }.map_err(|e| log::error!("{}", e))?;
 
         if name == friendly_name {
             // AdapterName is a null-terminated ASCII string like "{GUID}"
-            let guid_str = unsafe { adapter.AdapterName.to_string() }
-                .map_err(|e| log::error!("{}", e))?;
+            let guid_str =
+                unsafe { adapter.AdapterName.to_string() }.map_err(|e| log::error!("{}", e))?;
             let wide: Vec<u16> = guid_str.encode_utf16().chain(std::iter::once(0)).collect();
             let guid = unsafe { CLSIDFromString(PCWSTR(wide.as_ptr())) }
                 .map_err(|e| log::error!("{}", e))?;
@@ -140,23 +159,21 @@ pub struct WindowsConfig;
 
 impl ConfigManager for WindowsConfig {
     fn open_log_folder(&self, app: &tauri::AppHandle) -> Result<(), ()> {
-        let log_path = app.path().app_log_dir().map_err(|e|{log::error!("{e}")})?;
-        
+        let log_path = app.path().app_log_dir().map_err(|e| log::error!("{e}"))?;
+
         Command::new("explorer")
-        .arg(log_path)
-        .spawn()
-        .map_err(|e| {log::error!("{e}")})?;
+            .arg(log_path)
+            .spawn()
+            .map_err(|e| log::error!("{e}"))?;
 
         Ok(())
     }
     fn toggle_autostart(&self, value: bool) -> Result<(), ()> {
-        let exe_path = env::current_exe()
-        .map_err(|e| {log::error!("{e}")})?;
-
+        let exe_path = env::current_exe().map_err(|e| log::error!("{e}"))?;
 
         if value {
             enable_autostart(&exe_path)
-        }else {
+        } else {
             disable_autostart()
         }
     }
@@ -164,40 +181,27 @@ impl ConfigManager for WindowsConfig {
 
 pub fn enable_autostart(exe_path: &PathBuf) -> Result<(), ()> {
     let output = Command::new("schtasks")
-    .args([
-        "/Create",
-        "/TN",
-        "OutDNS",
-        "/SC",
-        "ONLOGON",
-        "/RL",
-        "HIGHEST",
-        "/F",
-    ])
-    .arg("/TR")
-    .arg(exe_path)
-    .creation_flags(0x08000000)
-    .status()
-    .map_err(|e| {log::error!("{e}")})?;
+        .args([
+            "/Create", "/TN", "OutDNS", "/SC", "ONLOGON", "/RL", "HIGHEST", "/F",
+        ])
+        .arg("/TR")
+        .arg(exe_path)
+        .creation_flags(0x08000000)
+        .status()
+        .map_err(|e| log::error!("{e}"))?;
 
-    if output.success(){
+    if output.success() {
         Ok(())
-    }else {
+    } else {
         Err(())
     }
-
 }
 pub fn disable_autostart() -> Result<(), ()> {
     let status = Command::new("schtasks")
-        .args([
-            "/Delete",
-            "/TN",
-            "OutDNS",
-            "/F",
-        ])
+        .args(["/Delete", "/TN", "OutDNS", "/F"])
         .creation_flags(0x08000000)
         .status()
-        .map_err(|e|{log::error!("{e}")})?;
+        .map_err(|e| log::error!("{e}"))?;
 
     if status.success() {
         Ok(())

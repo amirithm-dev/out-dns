@@ -1,8 +1,7 @@
-mod handlers;
-mod services;
-mod platform;
 mod database;
-
+mod handlers;
+mod platform;
+mod services;
 
 use std::sync::Mutex;
 
@@ -10,13 +9,20 @@ use tauri::Manager;
 use tauri_plugin_log::Target;
 
 use database::db::*;
+use handlers::config::*;
 use handlers::dns::*;
 use handlers::interface::*;
-use handlers::config::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            let window = app.get_webview_window("main").expect("no main window");
+            let _ = window.show();
+            let _ = window.unminimize();
+            let _ = window.set_focus();
+        }))
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(

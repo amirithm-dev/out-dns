@@ -12,6 +12,7 @@ import DnsList from "./components/comboBox/dns-servers";
 import { useLog } from "./contexts/logContext";
 import { usePopup } from "./contexts/popupContext";
 import DHCP from "./components/buttons/DHCP";
+import CheckUpdate from "./components/check-update";
 function App() {
   interface SelectedDns{
     name: string;
@@ -69,6 +70,8 @@ function App() {
           <div className="w-75 h-75 border-zinc-900 border-20 rounded-full top-5 left-20 absolute"></div>
           <textarea name="log" id="log" placeholder="logs..." className="resize-none outline-none border-0 p-2 absolute inset-0 overflow-y-auto overflow-x-hidden bg-transparent text-[#ccc] z-10 w-full h-full scrollbar-thin scrollbar-thumb-zinc-950 scroll-smooth font-mono text-[0.8rem]" readOnly value={logContent.join('\n')} ref={logRef}></textarea>
       </div>
+
+      <CheckUpdate></CheckUpdate>
 
     </main>
   );

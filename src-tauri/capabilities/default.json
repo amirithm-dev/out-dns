@@ -19,6 +19,9 @@
     "log:default",
     "updater:allow-download-and-install",
     "updater:allow-check",
-    "process:default"
+    "process:default",
+    "notification:allow-is-permission-granted",
+    "notification:allow-request-permission",
+    "notification:allow-notify"
   ]
 }

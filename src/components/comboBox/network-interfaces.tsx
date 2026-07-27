@@ -27,7 +27,7 @@ export default function NetworkInterfaces({selectedInterface, setSelectedInterfa
 
     return(
         <div ref={comboRef} className="w-[15rem] h-10 flex justify-end absolute top-10 left-12 z-20 select-none">
-            <div id="network-interfaces" className="rounded-[4px] border-[1px] border-[#000000] px-1 text-[#ffffffa8] text-[0.9rem] drop-shadow-2xl outline-0 w-full h-7 flex items-center" onClick={()=>{setIsOpen(prev => !(prev))}}>
+            <div id="network-interfaces" className="rounded-[4px] border-[1px] border-[#000000] px-1 text-white text-[0.9rem] drop-shadow-2xl outline-0 w-full h-7 flex items-center" onClick={()=>{setIsOpen(prev => !(prev))}}>
                 <div className="absolute top-0 right-1 flex justify-center items-center w-5 h-full ">
                     <ChevronLeft strokeWidth={1} className={(isOpen ? "-rotate-90 " : "rotate-0 ") + "w-4 h-4 duration-200 ease-in-out"}></ChevronLeft>
                 </div>

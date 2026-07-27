@@ -13,11 +13,14 @@ pub struct DnsEntries {
     display_order: i32,
 }
 // insert new dns record into database
-pub fn insert(name: &str, primary: &str, secondary: &str, state: &DbState) -> Result<(), ()>{
+pub fn insert(name: &str, primary: &str, secondary: &str, state: &DbState) -> Result<(), ()> {
     let db = state.0.lock().map_err(|e| log::error!("{}", e))?;
-    let mut display_order: i32 = db.query_row("
+    let mut display_order: i32 = db
+        .query_row(
+            "
             SELECT COALESCE(MAX(display_order), 0) FROM dns_entries
-            ",[],
+            ",
+            [],
             |row| row.get(0),
         )
         .map_err(|e| log::error!("{}", e))?;
@@ -40,7 +43,7 @@ pub fn insert(name: &str, primary: &str, secondary: &str, state: &DbState) -> Re
 //     Ok(())
 // }
 // delete an existing dns record from database
-pub fn delete(id: i64, state: &DbState) -> Result<(), ()>{
+pub fn delete(id: i64, state: &DbState) -> Result<(), ()> {
     let db = state.0.lock().map_err(|e| log::error!("{}", e))?;
     let row_affected = db
         .execute("DELETE FROM dns_entries WHERE id = ?1", params![id])
@@ -53,7 +56,7 @@ pub fn delete(id: i64, state: &DbState) -> Result<(), ()>{
     Ok(())
 }
 // get all dns records in database
-pub fn get(state: &DbState) -> Result<Vec<DnsEntries>, ()>{
+pub fn get(state: &DbState) -> Result<Vec<DnsEntries>, ()> {
     let db = state.0.lock().map_err(|e| log::error!("{}", e))?;
     let mut stmt = db
         .prepare("SELECT * FROM dns_entries ORDER BY display_order")
@@ -75,4 +78,3 @@ pub fn get(state: &DbState) -> Result<Vec<DnsEntries>, ()>{
 
     Ok(result)
 }
-
