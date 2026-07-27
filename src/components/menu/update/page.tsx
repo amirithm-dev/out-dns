@@ -96,7 +96,7 @@ export default function UpdateCenter({section}: {section: string}){
 
     return(
         <div className={(section == "update" ? "" : "translate-x-full opacity-0 ") + "absolute top-0 left-0 duration-300 w-full h-full p-5 flex flex-col justify-between items-center"}>
-            <div className="w-full min-h-16 bg-[#1f2023] rounded-full border border-[#00000041] drop-shadow-2xl overflow-hidden relative flex justify-between items-center">
+            <div className="w-full min-h-16 bg-zinc-900 rounded-full border border-black drop-shadow-2xl overflow-hidden relative flex justify-between items-center">
                 <div className="flex justify-start items-center gap-2 text-[0.9rem] p-2">
                     <p className="opacity-70">Current Version:</p>
                     <p>{currentVersion}</p>
@@ -108,14 +108,14 @@ export default function UpdateCenter({section}: {section: string}){
             </div>
 
             <div className={(update ? "translate-0 " : "translate-y-32 ") + "w-full min-h-44 bg-[#1f2023] rounded-md border border-[#00000041] drop-shadow-2xl overflow-hidden relative duration-500 ease-in-out group"}>
-                <div className={(update ? "bg-[#2052a8] " : "bg-[#363636] ") + "absolute top-0 left-0 w-full text-[0.8rem] flex justify-center items-center drop-shadow-2xl py-1 duration-300 ease-in-out text-[#f0f0f0]"}><p>{update ? "Update available" : "No update available"}</p></div>
+                <div className={(update ? "bg-[#2052a8] " : "bg-zinc-900 ") + "absolute top-0 left-0 w-full text-[0.8rem] flex justify-center items-center drop-shadow-2xl py-1 duration-300 ease-in-out text-[#f0f0f0]"}><p>{update ? "Update available" : "No update available"}</p></div>
                 
                 <div className={(update ? "opacity-100 " : "opacity-0 ") + "w-full mt-10 flex flex-col justify-start items-center gap-2 text-[0.9rem] duration-300 ease-in-out"}>
-                    <div className="w-9/12 bg-[#363636] p-1 rounded-md flex gap-2">
+                    <div className="w-9/12 bg-zinc-900 p-1 rounded-md flex gap-2">
                         <p className="opacity-70">new version:</p>
                         <p>{availableVersion}</p>
                     </div>
-                    <div className="w-9/12 bg-[#363636] p-1 rounded-md flex gap-2">
+                    <div className="w-9/12 bg-zinc-900 p-1 rounded-md flex gap-2">
                         <p className="opacity-70">description:</p>
                         <p>{updateDescription}</p>
                     </div>

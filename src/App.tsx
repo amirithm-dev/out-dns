@@ -11,6 +11,7 @@ import TitleBar from "./components/titlebar/titlebar";
 import DnsList from "./components/comboBox/dns-servers";
 import { useLog } from "./contexts/logContext";
 import { usePopup } from "./contexts/popupContext";
+import DHCP from "./components/buttons/DHCP";
 function App() {
   interface SelectedDns{
     name: string;
@@ -23,8 +24,9 @@ function App() {
   const [primaryDns, setPrimaryDns] = useState<string>("");
   const [secondaryDns, setSecondaryDns] = useState<string>("");
   
-  const [menuStatus, setMenuStatus] = useState(false); 
+  const [menuStatus, setMenuStatus] = useState(false);
   const logRef = useRef<HTMLTextAreaElement>(null);
+
   const {logContent,log} = useLog();
   const {showPopup} = usePopup();
 
@@ -41,10 +43,10 @@ function App() {
     if(logRef.current){
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
-  });
+  },[logContent]);
 
   return (
-    <main className="bg-[#1f2023] overflow-hidden min-w-screen min-h-screen rounded-lg drop-shadow-2xl outline-none">
+    <main className="bg-zinc-900 overflow-hidden min-w-screen min-h-screen rounded-lg drop-shadow-2xl outline-none">
 
       <TitleBar></TitleBar>
       <HMenu setMenuStatus={setMenuStatus}></HMenu>
@@ -56,13 +58,15 @@ function App() {
 
       <DnsServersInp primaryDns={primaryDns} setPrimaryDns={setPrimaryDns} secondaryDns={secondaryDns} setSecondaryDns={setSecondaryDns}></DnsServersInp>
 
+      <DHCP selectedInterface={selectedInterface}></DHCP>
+
       <div className="absolute bottom-5 right-5 flex flex-col gap-4 text-[#f0f0f0] font-[f1]">
         <SetDNSButton selectedInterface={selectedInterface} primaryDns={primaryDns} secondaryDns={secondaryDns}></SetDNSButton>
         <ClearCacheButton></ClearCacheButton>
       </div>
 
-      <div className="w-87.5 h-25 bg-[#363636] p-0 m-0 rounded-md absolute bottom-5 left-5 overflow-hidden group">
-          <div className="w-75 h-75 border-[#1f2023] border-20 rounded-full top-5 left-20 absolute"></div>
+      <div className="w-87.5 h-25 bg-[#303030] p-0 m-0 rounded-md absolute bottom-5 left-5 overflow-hidden group">
+          <div className="w-75 h-75 border-zinc-900 border-20 rounded-full top-5 left-20 absolute"></div>
           <textarea name="log" id="log" placeholder="logs..." className="resize-none outline-none border-0 p-2 absolute inset-0 overflow-y-auto overflow-x-hidden bg-transparent text-[#ccc] z-10 w-full h-full scrollbar-thin scrollbar-thumb-zinc-950 scroll-smooth font-mono text-[0.8rem]" readOnly value={logContent.join('\n')} ref={logRef}></textarea>
       </div>
 

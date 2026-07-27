@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import arrow from "./../../assets/arrow.png";
+import React, { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useLog } from "../../contexts/logContext";
+import { ChevronLeft } from "lucide-react";
 
 interface SelectedDns{
     name: string;
@@ -20,6 +20,7 @@ export default function DnsList({selectedDns, setSelectedDns}: {selectedDns: Sel
     }
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [dnsList, setDnsList] = useState<DnsEntry[]>([]);
+    const comboRef = useRef<HTMLDivElement>(null);
 
     function fetchDnsList(): void{
         invoke<DnsEntry[]>("get_dns_from_db")
@@ -29,15 +30,26 @@ export default function DnsList({selectedDns, setSelectedDns}: {selectedDns: Sel
         });
 
     }
+    
+    useEffect(()=>{
+        function handleClickOutside(e: MouseEvent){
+            if(comboRef.current && !comboRef.current.contains(e.target as Node)){
+                setIsOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    },[]);
 
     useEffect(()=>{
         fetchDnsList();
-    });
+    },[]);
     return(
-        <div className="w-[15rem] h-10 flex justify-end absolute top-10 right-12 z-20 select-none">
-            <div id="network-interfaces" className="rounded-[4px] border-[1px] border-[#0000008c] px-1 text-[#ffffffa8] text-[0.9rem] drop-shadow-2xl outline-0 w-full h-7 flex items-center" onClick={()=>{setIsOpen(prev => !(prev))}}>
+        <div ref={comboRef} className="w-[15rem] h-10 flex justify-end absolute top-10 right-12 z-20 select-none">
+            <div id="network-interfaces" className="rounded-[4px] border-[1px] border-[#000000] px-1 text-white text-[0.9rem] drop-shadow-2xl outline-0 w-full h-7 flex items-center" onClick={()=>{setIsOpen(prev => !(prev))}}>
                 <div className="absolute top-0 right-1 flex justify-center items-center w-5 h-full ">
-                    <img className={(isOpen ? "-rotate-90 " : "rotate-0 ") + "w-4 h-4 duration-200 ease-in-out"} src={arrow} alt="arrow"/>
+                    <ChevronLeft strokeWidth={1} className={(isOpen ? "-rotate-90 " : "rotate-0 ") + "w-4 h-4 duration-200 ease-in-out"}></ChevronLeft>
                 </div>
                 <p id="selected-interface" className="w-full h-fit">{selectedDns.name}</p>
             </div>

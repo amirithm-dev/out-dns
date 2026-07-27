@@ -65,16 +65,16 @@ export default function DNS({section}: {section: string}){
     
     return(
         <div className={(section == "dns" ? "" : "translate-x-full opacity-0 ") + "absolute top-0 left-0 duration-300 w-full h-full flex flex-col items-center p-5 gap-4"}>
-            <div className="w-full max-w-100 h-36 rounded-md bg-[#1f2023] border border-[#2c2c2c] drop-shadow-2xl overflow-hidden relative overflow-x-hidden overflow-y-scroll scrollbar-none">
+            <div className="w-full max-w-100 h-36 rounded-md bg-zinc-900 border border-black drop-shadow-2xl overflow-hidden relative overflow-x-hidden overflow-y-scroll scrollbar-none">
                 {dnsList.map((dns,i)=>{
                     return(
-                        <div key={i} className="w-full h-fit flex flex-col truncate border-b border-b-[#00000041] p-1 group gap-2">
+                        <div key={i} className="w-full h-fit flex flex-col truncate border-b border-b-black p-1 group gap-2">
                             <div className="flex gap-2 justify-center truncate overflow-hidden relative">
                                 <div className="truncate flex gap-2 justify-center absolute rounded backdrop-blur px-2 -translate-y-full scale-0 group-hover:translate-0 group-hover:scale-100 duration-200 ease-in-out border border-[#8181812c]">
                                     <p className="truncate w-fit text-[0.9rem]">{dns.name}</p>
                                 </div>
                                 <p className="w-full h-full truncate text-right font-[f2] text-[1rem]">{dns.primary_dns}</p>
-                                <span className="text-[#0000008c] font-mono">|</span>
+                                <span className="text-black font-mono">|</span>
                                 <p className="w-full h-full truncate text-left font-[f2] text-[1rem]">{dns.secondary_dns}</p>
                             </div>
                             <div className="w-1/12 flex justify-center items-center translate-x-7 group-hover:translate-0 group-hover:rotate-0 duration-200 ease-in-out fixed right-0">
@@ -88,18 +88,18 @@ export default function DNS({section}: {section: string}){
             <div className="flex w-full gap-2">
                 <div className="w-full flex items-center gap-2">
                     <div className="flex gap-2 flex-col justify-center items-center font-[f1]">
-                        <input value={dnsName} onChange={e => {setDnsName(e.currentTarget.value)}}          className="tracking-widest outline-none bg-[#1f2023] rounded-md py-2 px-5 text-center border border-[#0000008c] focus:border-[#2052a8] duration-200 max-w-52 min-w-52 font-[f3]" type="text" name="" id="" placeholder="DNS name" maxLength={30}/>
-                        <input value={firstAddress} onChange={e => (setFirstAddress(e.target.value))}       className="tracking-widest outline-none bg-[#1f2023] rounded-md py-2 px-5 text-center border border-[#0000008c] focus:border-[#2052a8] duration-200 max-w-52 min-w-52" type="text" name="" id="" placeholder="primary: 0.0.0.0" maxLength={15}/>
-                        <input value={secondAddress} onChange={e => (setSecondAddress(e.target.value))}     className="tracking-widest outline-none bg-[#1f2023] rounded-md py-2 px-5 text-center border border-[#0000008c] focus:border-[#2052a8] duration-200 max-w-52 min-w-52" type="text" name="" id="" placeholder="secondary: 0.0.0.0" maxLength={15}/>
+                        <input value={dnsName} onChange={e => {setDnsName(e.currentTarget.value)}}          className="tracking-widest outline-none bg-zinc-900 rounded-md py-2 px-5 text-center border border-[#0000008c] focus:border-[#2052a8] duration-200 max-w-52 min-w-52 font-[f3]" type="text" name="" id="" placeholder="DNS name" maxLength={30}/>
+                        <input value={firstAddress} onChange={e => (setFirstAddress(e.target.value))}       className="tracking-widest outline-none bg-zinc-900 rounded-md py-2 px-5 text-center border border-[#0000008c] focus:border-[#2052a8] duration-200 max-w-52 min-w-52" type="text" name="" id="" placeholder="primary: 0.0.0.0" maxLength={15}/>
+                        <input value={secondAddress} onChange={e => (setSecondAddress(e.target.value))}     className="tracking-widest outline-none bg-zinc-900 rounded-md py-2 px-5 text-center border border-[#0000008c] focus:border-[#2052a8] duration-200 max-w-52 min-w-52" type="text" name="" id="" placeholder="secondary: 0.0.0.0" maxLength={15}/>
                     </div>
                 </div>
                 <div className="flex flex-col justify-end gap-2 font-[f1]">
                     <button onClick={()=>{insert(dnsName, firstAddress, secondAddress)}} className="w-36 h-11 bg-[#2052a8] rounded-md text-center drop-shadow-2xl border border-[#1f20239f] overflow-hidden group">
-                        <div className="absolute -top-5 -left-5 translate-y-full scale-0 translate-x-40 group-hover:scale-100 group-hover:translate-0 border-4 border-black bg-transparent rounded-full w-15 h-15 blur-xs duration-400"></div>
+                        <div className="absolute -top-5 -left-5 translate-y-full scale-0 translate-x-40 group-hover:scale-100 group-hover:translate-0 border-4 border-[#111111] bg-transparent rounded-full w-15 h-15 blur-xs duration-400"></div>
                         <span>Add</span>
                     </button>
                     <button onClick={()=>{setDnsName(""); setFirstAddress(""); setSecondAddress("")}} className="w-36 h-11 bg-[#2052a8] rounded-md text-center drop-shadow-2xl border border-[#1f20239f] overflow-hidden group">
-                        <div className="absolute -top-5 -left-5 translate-y-full scale-0 translate-x-40 group-hover:scale-100 group-hover:translate-0 border-4 border-black bg-transparent rounded-full w-15 h-15 blur-xs duration-400"></div>
+                        <div className="absolute -top-5 -left-5 translate-y-full scale-0 translate-x-40 group-hover:scale-100 group-hover:translate-0 border-4 border-[#111111] bg-transparent rounded-full w-15 h-15 blur-xs duration-400"></div>
                         <span>clear</span>
                     </button>
                 </div>

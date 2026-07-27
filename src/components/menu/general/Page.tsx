@@ -74,9 +74,9 @@ export default function General({section}: {section: string}){
     }
 
     return(
-        <div className={(section == "general" ? "" : "translate-x-full opacity-0 " ) + "absolute top-0 left-0 duration-400 p-5 w-full h-full flex flex-col items-center gap-2 text-[0.9rem]"}> 
+        <div className={(section == "general" ? "" : "translate-x-full opacity-0 " ) + "absolute top-0 left-0 duration-400 p-5 w-full h-full flex flex-col items-center gap-2 text-[0.9rem] mt-2"}> 
         {/* clear cache */}
-            <div className="w-full flex justify-between items-center bg-[#1f2023] drop-shadow-2xl p-2 rounded-full border border-[#2c2c2c] group">
+            <div className="w-full flex justify-between items-center bg-zinc-900 drop-shadow-2xl p-2 rounded-full border border-black group">
                 <p className="duration-200 ease-in-out">Clear cache on dns change</p>
                 <label htmlFor="clearCache">
                     <div className={(configs.flush_dns_on_change ? "bg-blue-600 " : "bg-[#363636] ") + "w-10 h-5 rounded-full relative flex items-center duration-200 ease-in-out"}>
@@ -86,7 +86,7 @@ export default function General({section}: {section: string}){
                 </label>
             </div>
         {/* autostart */}
-            <div className="w-full flex justify-between items-center bg-[#1f2023] drop-shadow-2xl p-2 rounded-full border border-[#2c2c2c] group">
+            <div className="w-full flex justify-between items-center bg-zinc-900 drop-shadow-2xl p-2 rounded-full border border-black group">
                 <p className="duration-200 ease-in-out">Run on start</p>
                 <label htmlFor="autostart">
                     <div className={(configs.autostart ? "bg-blue-600 " : "bg-[#363636] ") + "w-10 h-5 rounded-full relative flex items-center duration-200 ease-in-out"}>
@@ -96,7 +96,7 @@ export default function General({section}: {section: string}){
                 </label>
             </div>
         {/* system tray on close */}
-            <div className="w-full flex justify-between items-center bg-[#1f2023] drop-shadow-2xl p-2 rounded-full border border-[#2c2c2c] group">
+            <div className="w-full flex justify-between items-center bg-zinc-900 drop-shadow-2xl p-2 rounded-full border border-black group">
                 <p className="duration-200 ease-in-out">Stay open in system tray | close</p>
                 <label htmlFor="systemTrayOnClose">
                     <div className={(configs.close_to_tray ? "bg-blue-600 " : "bg-[#363636] ") + "w-10 h-5 rounded-full relative flex items-center duration-200 ease-in-out"}>
@@ -106,7 +106,7 @@ export default function General({section}: {section: string}){
                 </label>
             </div>
         {/* system tray on minimize */}
-            <div className="w-full flex justify-between items-center bg-[#1f2023] drop-shadow-2xl p-2 rounded-full border border-[#2c2c2c] group">
+            <div className="w-full flex justify-between items-center bg-zinc-900 drop-shadow-2xl p-2 rounded-full border border-black group">
                 <p className="duration-200 ease-in-out">Stay open in system tray | minimize</p>
                 <label htmlFor="systemTrayOnMinimize">
                     <div className={(configs.minimize_to_tray ? "bg-blue-600 " : "bg-[#363636] ") + "w-10 h-5 rounded-full relative flex items-center duration-200 ease-in-out"}>
