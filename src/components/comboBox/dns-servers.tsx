@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { useLog } from "../../contexts/logContext";
+import { useLog } from "../../contexts/log-context";
 import { ChevronLeft } from "lucide-react";
 
 interface SelectedDns{

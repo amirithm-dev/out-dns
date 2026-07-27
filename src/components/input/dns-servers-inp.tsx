@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import React, { useState } from "react";
-import { useLog } from "../../contexts/logContext";
+import { useLog } from "../../contexts/log-context";
 
 export default function DnsServersInp({
         primaryDns,

@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useLog } from "../../../contexts/logContext";
-import { useConfig } from "../../../contexts/configsContext";
+import { useLog } from "../../../contexts/log-context";
+import { useConfig } from "../../../contexts/configs-context";
 
 export default function General({section}: {section: string}){
     const {log} = useLog();

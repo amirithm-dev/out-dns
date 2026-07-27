@@ -37,6 +37,16 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_opener::init())
+        // start hidden on startup
+        .setup(|app| {
+            let start_minimized = std::env::args().any(|arg| arg == "--minimized");
+            if start_minimized {
+                let windows = app.get_webview_window("main").expect("no main window");
+                windows.hide()?;
+            }
+            Ok(())
+        })
+        // initialize database connection on start
         .setup(|app| {
             let conn = init_db(&app.handle());
             app.manage(DbState(Mutex::new(conn)));

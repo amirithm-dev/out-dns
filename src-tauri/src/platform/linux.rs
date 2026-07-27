@@ -231,7 +231,7 @@ pub fn enable_autostart() -> Result<(), ()> {
         "[Desktop Entry]\n\
         Type=Application\n\
         Name=OutDNS\n\
-        Exec={}\n\
+        Exec={} --minimized\n\
         Hidden=false\n\
         X-GNOME-Autostart-enabled=true\n",
         exec_path

@@ -9,10 +9,11 @@ import NetworkInterfaces from "./components/comboBox/network-interfaces";
 import DnsServersInp from "./components/input/dns-servers-inp";
 import TitleBar from "./components/titlebar/titlebar";
 import DnsList from "./components/comboBox/dns-servers";
-import { useLog } from "./contexts/logContext";
-import { usePopup } from "./contexts/popupContext";
+import { useLog } from "./contexts/log-context";
+import { usePopup } from "./contexts/popup-context";
 import DHCP from "./components/buttons/DHCP";
-import CheckUpdate from "./components/check-update";
+import { check } from "@tauri-apps/plugin-updater";
+import { useNotification } from "../hooks/useNotification";
 function App() {
   interface SelectedDns{
     name: string;
@@ -30,21 +31,39 @@ function App() {
 
   const {logContent,log} = useLog();
   const {showPopup} = usePopup();
+  const {send} = useNotification();
 
+  // initialize the tray icon
   useEffect(()=>{
     init_tray(log,showPopup).catch((err) => console.error("Failed to init tray:", err));
   },[]);
   
+  // sync dns servers with selected profile
   useEffect(() => {
     setPrimaryDns(selectedDns.primary);
     setSecondaryDns(selectedDns.secondary);
   }, [selectedDns]);
 
+  // scroll the log to end 
   useEffect(()=>{
     if(logRef.current){
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
   },[logContent]);
+
+  // check for update 
+  useEffect(()=>{
+    check()
+    .then((update)=>{
+      if(update !== null){
+        send({
+          title: "Out DNS",
+          body: "Update available. Pleas update Out DNS from update menu"
+        });
+      }
+    })
+    .catch(()=>{});
+  },[]);
 
   return (
     <main className="bg-zinc-900 overflow-hidden min-w-screen min-h-screen rounded-lg drop-shadow-2xl outline-none">
@@ -70,8 +89,6 @@ function App() {
           <div className="w-75 h-75 border-zinc-900 border-20 rounded-full top-5 left-20 absolute"></div>
           <textarea name="log" id="log" placeholder="logs..." className="resize-none outline-none border-0 p-2 absolute inset-0 overflow-y-auto overflow-x-hidden bg-transparent text-[#ccc] z-10 w-full h-full scrollbar-thin scrollbar-thumb-zinc-950 scroll-smooth font-mono text-[0.8rem]" readOnly value={logContent.join('\n')} ref={logRef}></textarea>
       </div>
-
-      <CheckUpdate></CheckUpdate>
 
     </main>
   );

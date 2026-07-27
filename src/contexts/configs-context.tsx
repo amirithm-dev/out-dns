@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
-import { useLog } from "./logContext";
+import { useLog } from "./log-context";
 
 export interface Configs{
     id: number,

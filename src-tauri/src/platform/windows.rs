@@ -180,12 +180,13 @@ impl ConfigManager for WindowsConfig {
 }
 
 pub fn enable_autostart(exe_path: &PathBuf) -> Result<(), ()> {
+    let task_command = format!("\"{}\" --minimized", exe_path.display());
     let output = Command::new("schtasks")
         .args([
             "/Create", "/TN", "OutDNS", "/SC", "ONLOGON", "/RL", "HIGHEST", "/F",
         ])
         .arg("/TR")
-        .arg(exe_path)
+        .arg(task_command)
         .creation_flags(0x08000000)
         .status()
         .map_err(|e| log::error!("{e}"))?;

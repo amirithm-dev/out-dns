@@ -1,7 +1,7 @@
 import {Window } from "@tauri-apps/api/window";
 import closePNG from "./../../assets/close.png"
 import minimizePNG from "./../../assets/minimize.png"
-import { useConfig } from "../../contexts/configsContext";
+import { useConfig } from "../../contexts/configs-context";
 
 export default function TitleBar(){
     const win = Window.getCurrent();

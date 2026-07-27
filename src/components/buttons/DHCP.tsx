@@ -1,7 +1,7 @@
 import { RotateCcw } from "lucide-react"
-import { useLog } from "../../contexts/logContext";
+import { useLog } from "../../contexts/log-context";
 import { invoke } from "@tauri-apps/api/core";
-import { usePopup } from "../../contexts/popupContext";
+import { usePopup } from "../../contexts/popup-context";
 
 export default function DHCP({selectedInterface}: {selectedInterface: string}){
     const {log} = useLog();

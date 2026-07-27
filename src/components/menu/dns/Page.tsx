@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
-import { useLog } from "../../../contexts/logContext";
+import { useLog } from "../../../contexts/log-context";
 
 import remove from './../../../assets/remove.png'
-import { usePopup } from "../../../contexts/popupContext";
+import { usePopup } from "../../../contexts/popup-context";
 
 export default function DNS({section}: {section: string}){
     const { showPopup } = usePopup();

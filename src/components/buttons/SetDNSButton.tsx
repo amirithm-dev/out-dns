@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import { usePopup } from "../../contexts/popupContext";
-import { useLog } from "../../contexts/logContext";
+import { usePopup } from "../../contexts/popup-context";
+import { useLog } from "../../contexts/log-context";
 
 export default function SetDNSButton({
         selectedInterface,
