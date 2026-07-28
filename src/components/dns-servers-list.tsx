@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft } from "lucide-react";
-import { useLog } from "../contexts/log-context";
 import { useDNS } from "../contexts/dns-context";
 
 export default function DNSServersList(){
-    const {selectedDNS, setSelectedDNS, primaryDNS, setPrimaryDNS, secondaryDNS, setSecondaryDNS, DNSList} = useDNS();
-    const {log} = useLog();
+    const {selectedDNS, setSelectedDNS, DNSList} = useDNS();
+
     const defaultDNS = {name: "Default DNS", primary: "", secondary: ""};
 
     const [isOpen, setIsOpen] = useState<boolean>(false);

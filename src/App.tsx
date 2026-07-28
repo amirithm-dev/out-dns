@@ -11,9 +11,9 @@ import { check } from "@tauri-apps/plugin-updater";
 import { useNotification } from "../hooks/useNotification";
 import TitleBar from "./components/titlebar";
 import DnsServersInp from "./components/dns-servers-inp";
-import DHCP from "./components/DHCP-btn";
 import NetworkInterfacesList from "./components/network-interfaces-list";
 import DNSServersList from "./components/dns-servers-list";
+import DHCP from "./components/dhcp-btn";
 
 function App() {
     
