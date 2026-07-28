@@ -1,31 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 
 import init_tray from "./lib/tray";
-import HMenu from "./components/buttons/HMenu";
+import HMenu from "./components/menu-btn";
 import MenuLayout from "./components/menu/Layout";
-import ClearCacheButton from "./components/buttons/ClearCacheButton";
-import SetDNSButton from "./components/buttons/SetDNSButton";
-import NetworkInterfaces from "./components/comboBox/network-interfaces";
-import DnsServersInp from "./components/input/dns-servers-inp";
-import TitleBar from "./components/titlebar/titlebar";
-import DnsList from "./components/comboBox/dns-servers";
+import ClearCacheButton from "./components/clear-cache-btn";
+import SetDNSButton from "./components/set-DNS-btn";
 import { useLog } from "./contexts/log-context";
 import { usePopup } from "./contexts/popup-context";
-import DHCP from "./components/buttons/DHCP";
 import { check } from "@tauri-apps/plugin-updater";
 import { useNotification } from "../hooks/useNotification";
+import TitleBar from "./components/titlebar";
+import DnsServersInp from "./components/dns-servers-inp";
+import DHCP from "./components/DHCP-btn";
+import NetworkInterfacesList from "./components/network-interfaces-list";
+import DNSServersList from "./components/dns-servers-list";
+
 function App() {
-  interface SelectedDns{
-    name: string;
-    primary: string;
-    secondary: string;
-  }
-  const [selectedDns, setSelectedDns] = useState<SelectedDns>({name: "Default DNS", primary: "", secondary: ""});
-  const [selectedInterface, setSelectedInterface] = useState<string>("All Networks");
-  
-  const [primaryDns, setPrimaryDns] = useState<string>("");
-  const [secondaryDns, setSecondaryDns] = useState<string>("");
-  
+    
   const [menuStatus, setMenuStatus] = useState(false);
   const logRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,12 +28,6 @@ function App() {
   useEffect(()=>{
     init_tray(log,showPopup).catch((err) => console.error("Failed to init tray:", err));
   },[]);
-  
-  // sync dns servers with selected profile
-  useEffect(() => {
-    setPrimaryDns(selectedDns.primary);
-    setSecondaryDns(selectedDns.secondary);
-  }, [selectedDns]);
 
   // scroll the log to end 
   useEffect(()=>{
@@ -72,16 +57,16 @@ function App() {
       <HMenu setMenuStatus={setMenuStatus}></HMenu>
       <MenuLayout menuStatus={menuStatus} setMenuStatus={setMenuStatus}></MenuLayout>
 
-      <NetworkInterfaces selectedInterface={selectedInterface} setSelectedInterface={setSelectedInterface}></NetworkInterfaces>
+      <NetworkInterfacesList></NetworkInterfacesList>
 
-      <DnsList selectedDns={selectedDns} setSelectedDns={setSelectedDns}></DnsList>
+      <DNSServersList></DNSServersList>
 
-      <DnsServersInp primaryDns={primaryDns} setPrimaryDns={setPrimaryDns} secondaryDns={secondaryDns} setSecondaryDns={setSecondaryDns}></DnsServersInp>
+      <DnsServersInp></DnsServersInp>
 
-      <DHCP selectedInterface={selectedInterface}></DHCP>
+      <DHCP></DHCP>
 
       <div className="absolute bottom-5 right-5 flex flex-col gap-4 text-[#f0f0f0] font-[f1]">
-        <SetDNSButton selectedInterface={selectedInterface} primaryDns={primaryDns} secondaryDns={secondaryDns}></SetDNSButton>
+        <SetDNSButton></SetDNSButton>
         <ClearCacheButton></ClearCacheButton>
       </div>
 

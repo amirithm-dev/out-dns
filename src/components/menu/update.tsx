@@ -3,7 +3,7 @@ import { relaunch } from "@tauri-apps/plugin-process";
 import { check, Update } from "@tauri-apps/plugin-updater";
 import { useEffect, useState } from "react";
 
-import spinningCircle from "./../../../assets/Edupia loading.gif";
+import spinningCircle from "./../../assets/loading.gif";
 
 export default function UpdateCenter({section}: {section: string}){
     const [update, setUpdate] = useState<Update | null>(null);

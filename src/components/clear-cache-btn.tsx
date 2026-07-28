@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useLog } from "../../contexts/log-context";
-import { usePopup } from "../../contexts/popup-context";
+import { useLog } from "../contexts/log-context";
+import { usePopup } from "../contexts/popup-context";
 
 export default function ClearCacheButton(){
     const {showPopup} = usePopup();

@@ -1,22 +1,18 @@
 import { invoke } from "@tauri-apps/api/core";
-import { usePopup } from "../../contexts/popup-context";
-import { useLog } from "../../contexts/log-context";
+import { usePopup } from "../contexts/popup-context";
+import { useLog } from "../contexts/log-context";
+import { useDNS } from "../contexts/dns-context";
+import { useInterface } from "../contexts/interface-context";
 
-export default function SetDNSButton({
-        selectedInterface,
-        primaryDns,
-        secondaryDns
-    }: {
-        selectedInterface: string,
-        primaryDns: string,
-        secondaryDns: string
-    }){
+export default function SetDNSButton(){
+    const {selectedInterface} = useInterface();
+    const {primaryDNS, secondaryDNS} = useDNS();
     const {showPopup} = usePopup();
     const {log} = useLog();
 
     const set_dns = () => {
         log("processing... ⏳");
-        invoke<string>("set_dns",{interface: selectedInterface,primary: primaryDns,secondary: secondaryDns})
+        invoke<string>("set_dns",{interface: selectedInterface,primary: primaryDNS,secondary: secondaryDNS})
         .then(()=>{
             showPopup("success");
             log(`DNS applied for ${selectedInterface} ✅`);

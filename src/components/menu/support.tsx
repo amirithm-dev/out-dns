@@ -1,8 +1,8 @@
 import { openUrl } from '@tauri-apps/plugin-opener';
-import ReymitLogo from "./../../../assets/reymit.webp"
-import TetherLogo from "./../../../assets/tether.png";
-import Github from "./../../../assets/github.png";
-import Tron from "./../../../assets/Tron.png";
+import ReymitLogo from "./../../assets/reymit.webp"
+import TetherLogo from "./../../assets/tether.png";
+import Github from "./../../assets/github.png";
+import Tron from "./../../assets/Tron.png";
 
 import { useState } from 'react';
 

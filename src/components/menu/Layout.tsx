@@ -1,8 +1,8 @@
-import General from "./general/Page";
-import Support from "./support/Page";
-import DNS from "./dns/Page";
+import General from "./general";
+import Support from "./support";
+import DNS from "./dns";
 import React, { useRef, useState } from "react";
-import UpdateCenter from "./update/page";
+import UpdateCenter from "./update";
 import { X } from "lucide-react";
 export default function MenuLayout({menuStatus, setMenuStatus}: {menuStatus: boolean, setMenuStatus: React.Dispatch<React.SetStateAction<boolean>>}){
     const [section, setSection] = useState('general');

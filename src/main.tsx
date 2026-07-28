@@ -5,6 +5,8 @@ import "./App.css";
 import { LogProvider } from "./contexts/log-context";
 import { PopupProvider } from "./contexts/popup-context";
 import { ConfigProvider } from "./contexts/configs-context";
+import DNSProvider from "./contexts/dns-context";
+import InterfaceProvider from "./contexts/interface-context";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -12,9 +14,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <PopupProvider>
       <LogProvider>
         <ConfigProvider>
+          <InterfaceProvider>
+            <DNSProvider>
 
-          <App />
-          
+              <App />
+
+            </DNSProvider>
+          </InterfaceProvider>
         </ConfigProvider>
       </LogProvider>
     </PopupProvider>
