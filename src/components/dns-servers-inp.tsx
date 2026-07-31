@@ -43,7 +43,7 @@ export default function DnsServersInp(){
     return(
         <div className=" w-10/12 h-fit flex flex-row justify-around items-center text-white absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 font-[f2]">
             <div className="relative">
-                <div className="absolute -top-3 right-4 z-20 text-[0.9rem] bg-[#1f2023] rounded text-[#8b8b8b] select-none"><span>{primaryLookup}</span></div>
+                <div className="absolute -top-3 right-4 z-20 text-[0.9rem] bg-zinc-900 rounded text-[#8b8b8b] select-none"><span>{primaryLookup}</span></div>
                 <input onChange={(e)=> {setPrimaryDNS(e.currentTarget.value)}} value={primaryDNS} className="w-56 h-14 outline-none rounded-md bg-[#1f2023] border border[1px] border-[#0000008c] focus:border-[#2052a8] duration-200 ease-in-out px-2 py-1 text-center drop-shadow-2xl text-[1.2rem]" type="text" placeholder="primary: 0.0.0.0" onKeyDown={allowedInput} maxLength={15}/>
             </div>
             
@@ -52,7 +52,7 @@ export default function DnsServersInp(){
             </div>
 
             <div className="relative">
-                <div className="absolute -top-3 right-4 z-20 text-[0.9rem] bg-[#1f2023] rounded text-[#8b8b8b] select-none"><span>{secondaryLookup}</span></div>
+                <div className="absolute -top-3 right-4 z-20 text-[0.9rem] bg-zinc-900 rounded text-[#8b8b8b] select-none"><span>{secondaryLookup}</span></div>
                 <input onChange={(e)=> {setSecondaryDNS(e.currentTarget.value)}} value={secondaryDNS} className="w-56 h-14 outline-none rounded-md bg-[#1f2023] border border[1px] border-[#0000008c] focus:border-[#2052a8] duration-200 ease-in-out px-2 py-1 text-center drop-shadow-2xl text-[1.2rem]" type="text" placeholder="secondary: 0.0.0.0" onKeyDown={allowedInput} maxLength={15}/>
             </div>
         </div>

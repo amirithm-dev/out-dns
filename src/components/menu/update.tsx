@@ -131,13 +131,10 @@ export default function UpdateCenter({section}: {section: string}){
             </div>
 
             {/* install screen */}
-            <div className={(isUpdating ? "opacity-100 " : "opacity-0 pointer-events-none ") + "w-full h-full absolute top-0 left-0 bg-[#1f2023] z-50 duration-300 flex justify-center items-center flex-col gap-4"}>
+            <div className={(isUpdating ? "opacity-100 " : "opacity-0 pointer-events-none ") + "w-full h-full absolute top-0 left-0 bg-zinc-900 z-50 duration-300 flex justify-center items-center flex-col gap-4"}>
                 <p>{updateStatus}</p>
-                <div className="w-10/12 h-4 bg-[#363636] rounded-full drop-shadow-2xl overflow-hidden">
+                <div className="w-10/12 h-4 bg-zinc-800 rounded-full drop-shadow-2xl overflow-hidden">
                     <div className={"w-0 h-full bg-[#2052a8] duration-500"} style={{ width: `${percent}%` }}></div>
-                </div>
-                <div className="p-1 rounded-t-md absolute bottom-0 left-1/2 -translate-x-1/2 bg-[#8d1717] truncate text-[0.9rem] drop-shadow-2xl">
-                    <p>don't leave this page while updating</p>
                 </div>
             </div>
 
