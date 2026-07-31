@@ -241,7 +241,7 @@ function OnlineDNS({
                         </div>
                         
                         <div className="flex flex-col items-center">
-                            <div className="w-11/12 flex justify-center items-center mt-4 gap-2 bg-zinc-950 rounded-md">
+                            <div className="w-11/12 flex justify-center items-center mt-4 gap-2 py-1 bg-zinc-950 rounded-md">
                                 <p>{dns.primary}</p>
                                 <span className="font-serif">|</span> 
                                 <p>{dns.secondary}</p>
@@ -286,8 +286,10 @@ function OnlineDNS({
                 </div>
             )}
             {fetching && (
-                <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full bg-zinc-900 text-center z-40">
-                    <p className="text-blue-700 text-xl">Loading...</p>
+                <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full h-full bg-zinc-900 flex justify-center items-center z-40">
+                    <div className="w-32 h-32 md:w-42 md:h-42 bg-transparent absolute animate-spin ring ring-blue-700/70   rounded-3xl" style={{ animationDuration: "2s" }}></div>
+                    <div className="w-32 h-32 md:w-42 md:h-42 bg-transparent absolute animate-spin ring ring-red-700/70    rounded-3xl" style={{ animationDuration: "3s" }}></div>
+                    <div className="w-32 h-32 md:w-42 md:h-42 bg-transparent absolute animate-spin ring ring-green-700/70  rounded-3xl" style={{ animationDuration: "4s" }}></div>
                 </div>
             )}
 
