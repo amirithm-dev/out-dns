@@ -4,7 +4,7 @@ import { useLog } from "../../contexts/log-context";
 
 import { usePopup } from "../../contexts/popup-context";
 import { useDNS } from "../../contexts/dns-context";
-import { ChevronDown, ChevronLeft, ChevronRight, CircleCheckBig, Globe, Minus, Plus, ReceiptText, RefreshCcw, Search } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, CircleCheckBig, Globe, Minus, Plus, RefreshCcw, Search } from "lucide-react";
 import axios from "axios";
 import { DatabaseDNSEntry } from "../../../types";
 
