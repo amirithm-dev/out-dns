@@ -122,23 +122,21 @@ function OnlineDNS({
     const [searchParam, setSearchParam] = useState<string>("Cloudflare");
     const mainDivRef = useRef<HTMLDivElement>(null);
 
-    const refetchDNSList = ()=>{
+    const refetchDNSList = async ()=>{
         if(fetching) return;
         setFetching(true);
-        axios.get(`https://outdns.ir/api/dns-profile?offset=${offset}&limit=10`)
-        .then((r)=>{
-            if(r.status === 200){
-                setDNSList(r.data);
+        try {
+            const result = await axios.get(`https://outdns.ir/api/dns-profile?offset=${offset}&limit=10`);
+            if(result.status === 200){
+                setDNSList(result.data);
             }else{
                 setFetchError("Unable to fetch DNS List");
             }
-        })
-        .catch(()=>{
+        } catch (error) {
             setFetchError("Unable to fetch DNS List");
-        })
-        .finally(()=>{
+        } finally {
             setFetching(false);
-        });
+        }
     }
 
     useEffect(()=>{
@@ -162,7 +160,7 @@ function OnlineDNS({
     }
 
     const insertFetchedDNS = async (id: string, name: string, primary: string, secondary: string)=>{
-        await axios.post(`https://outdns.ir/api/dns-profile/${id}/use`).catch();
+        void axios.post(`https://outdns.ir/api/dns-profile/${id}/use`);
         insert(name, primary, secondary);
         document.getElementById(id)?.remove();
     }
@@ -195,24 +193,22 @@ function OnlineDNS({
         }
     }
 
-    const search = ()=>{
+    const search = async ()=>{
         if(fetching || !searchParam) return;
         setFetching(true);
         
-        axios.get(`https://outdns.ir/api/dns-profile/search/${searchParam}`)
-        .then((r)=>{
-            if(r.status === 200){
-                setDNSList(r.data);
+        try {
+            const result = await axios.get(`https://outdns.ir/api/dns-profile/search/${searchParam}`);
+            if(result.status === 200){
+                setDNSList(result.data);
             }else{
                 setFetchError("Unable to fetch DNS List");
             }
-        })
-        .catch(()=>{
+        } catch (error) {
             setFetchError("Unable to fetch DNS List");
-        })
-        .finally(()=>{
+        } finally {
             setFetching(false);
-        });
+        }
     }
 
     const handleKeyDown = (e: React.KeyboardEvent)=>{
@@ -241,7 +237,7 @@ function OnlineDNS({
                         </div>
                         
                         <div className="flex flex-col items-center">
-                            <div className="w-11/12 flex justify-center items-center mt-4 gap-2 bg-zinc-950 rounded-md">
+                            <div className="w-11/12 flex justify-center items-center mt-4 gap-2 py-1 bg-zinc-950 rounded-md">
                                 <p>{dns.primary}</p>
                                 <span className="font-serif">|</span> 
                                 <p>{dns.secondary}</p>
@@ -286,8 +282,10 @@ function OnlineDNS({
                 </div>
             )}
             {fetching && (
-                <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full bg-zinc-900 text-center z-40">
-                    <p className="text-blue-700 text-xl">Loading...</p>
+                <div className="absolute top-1/2 left-1/2 -translate-1/2 w-full h-full bg-zinc-900 flex justify-center items-center z-40">
+                    <div className="w-32 h-32 md:w-42 md:h-42 bg-transparent absolute animate-spin ring ring-blue-700/70   rounded-3xl" style={{ animationDuration: "2s" }}></div>
+                    <div className="w-32 h-32 md:w-42 md:h-42 bg-transparent absolute animate-spin ring ring-red-700/70    rounded-3xl" style={{ animationDuration: "3s" }}></div>
+                    <div className="w-32 h-32 md:w-42 md:h-42 bg-transparent absolute animate-spin ring ring-green-700/70  rounded-3xl" style={{ animationDuration: "4s" }}></div>
                 </div>
             )}
 

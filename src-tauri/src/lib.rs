@@ -5,6 +5,7 @@ mod services;
 
 use std::sync::Mutex;
 
+use tauri::Listener;
 use tauri::Manager;
 use tauri_plugin_log::Target;
 
@@ -12,6 +13,8 @@ use database::db::*;
 use handlers::config::*;
 use handlers::dns::*;
 use handlers::interface::*;
+
+use crate::platform::windows;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -37,19 +40,17 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_opener::init())
-        // start hidden on startup
         .setup(|app| {
-            let start_minimized = std::env::args().any(|arg| arg == "--minimized");
-            if start_minimized {
-                let windows = app.get_webview_window("main").expect("no main window");
-                windows.hide()?;
+            // minimize on autostart
+            let minimized = std::env::args().any(|arg| arg == "--minimized");
+            let windows = app.get_webview_window("main").expect("no main window");
+            if !minimized {
+                let _ = windows.show();
             }
-            Ok(())
-        })
-        // initialize database connection on start
-        .setup(|app| {
+            // initialize db connection
             let conn = init_db(&app.handle());
             app.manage(DbState(Mutex::new(conn)));
+            
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
