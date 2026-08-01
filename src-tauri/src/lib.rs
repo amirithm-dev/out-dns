@@ -5,7 +5,6 @@ mod services;
 
 use std::sync::Mutex;
 
-use tauri::Listener;
 use tauri::Manager;
 use tauri_plugin_log::Target;
 
@@ -13,8 +12,6 @@ use database::db::*;
 use handlers::config::*;
 use handlers::dns::*;
 use handlers::interface::*;
-
-use crate::platform::windows;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
